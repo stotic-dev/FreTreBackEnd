@@ -27,7 +27,7 @@ jobs:
 
       - name: Move artifacts for upload
         if: ${{ success() }} && github.ref == 'main'
-        run: mkdir staging && cp target/*.{jar,war} staging
+        run: mkdir staging && cp ./*/target/*.{jar,war} staging
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
