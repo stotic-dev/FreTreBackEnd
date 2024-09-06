@@ -11,9 +11,9 @@ on:
         required: true
       GIT_PRIVATE_KEY:
         required: true
-      EC2_USER_NAME:
+      USER_NAME:
         required: true
-      EC2_HOST_NAME:
+      HOST_NAME:
         required: true
   workflow_dispatch:
 
