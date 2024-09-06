@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: webServer
+    ports:
+      - "8443:443"
+    volumes:
+      # NGINXのコンフィグファイルをホストOSから、ゲストOSに連結する
+      - ./nginx:/etc/nginx/conf.d/
+    links:
+      - app
+  app:
+    image: jetty:11.0.15-jdk17
+    container_name: fretre
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./fretre:/var/lib/jetty/webapps
+
+#  app:
+#    build:
+#      context: .
+#      dockerfile: ./fretre/Dockerfile
+#    ports:
+#      - "8080:8080"
+
+
+
