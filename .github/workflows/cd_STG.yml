@@ -2,6 +2,19 @@ name: Server CD to STG
 
 on:
   workflow_call:
+    secrets:
+      AWS_ACCESS_KEY:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      EC2_SECURITY_GROUP_ID:
+        required: true
+      GIT_PRIVATE_KEY:
+        required: true
+      EC2_USER_NAME:
+        required: true
+      EC2_HOST_NAME:
+        required: true
   workflow_dispatch:
 
 permissions:
