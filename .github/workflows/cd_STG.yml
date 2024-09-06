@@ -1,0 +1,12 @@
+name: Server CD to STG
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Hello cd workflow"

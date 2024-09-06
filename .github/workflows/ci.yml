@@ -34,3 +34,7 @@ jobs:
         with:
           name: Package
           path: staging
+  call-workflow:
+    if: ${{ success() }} && github.ref == 'main'
+    needs: [build]
+    uses: ./.github/workflows/cd_STG.yml
