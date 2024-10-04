@@ -26,7 +26,7 @@ public class PushNotificationApnsRequestTest {
         PushNotificationApnsRequest.Aps aps = new PushNotificationApnsRequest.Aps(new PushNotificationApnsRequest.Aps.Payload(new PushNotificationApnsRequest.Aps.Payload.Alert(testTitle,testBody)));
         PushNotificationApnsRequest request = new PushNotificationApnsRequest(headers,aps);
 
-        Map<String, String> resultHeader = request.getHeadrs();
+        Map<String, String> resultHeader = request.getHeaders();
 
         Assertions.assertEquals(3, resultHeader.size());
         Assertions.assertEquals(testPath, resultHeader.get("path"));

@@ -11,7 +11,7 @@ public interface HttpClientInterface {
      * @param <ResponseData> レスポンスデータの型
      * @throws IOException
      */
-    <ResponseData> ApiResponse<ResponseData> get(ApiServiceInterface service) throws IOException;
+    <ResponseData> ApiResponse<ResponseData> get(ApiServiceInterface service, Class<ResponseData> responseType) throws IOException;
 
     /**
      * POSTでHTTPリクエストを行う
@@ -20,5 +20,5 @@ public interface HttpClientInterface {
      * @param <ResponseData> レスポンスデータの型
      * @throws IOException
      */
-    <ResponseData> ApiResponse<ResponseData> post(ApiServiceInterface service) throws IOException;
+    <ResponseData> ApiResponse<ResponseData> post(ApiServiceInterface service, Class<ResponseData> responseType) throws IOException;
 }

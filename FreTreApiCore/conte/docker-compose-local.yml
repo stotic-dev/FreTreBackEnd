@@ -18,12 +18,5 @@ services:
     volumes:
       - ./fretre:/var/lib/jetty/webapps
 
-#  app:
-#    build:
-#      context: .
-#      dockerfile: ./fretre/Dockerfile
-#    ports:
-#      - "8080:8080"
-
 
 

@@ -1,7 +1,9 @@
 package org.stotic.dev.com.sequrity.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.stotic.dev.com.logger.ApiLogger;
 
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.time.Instant;
 import java.util.Base64;
@@ -16,14 +18,21 @@ public class JwtGenerator {
         final JwtPayload payload = new JwtPayload(teamId, Instant.now());
         final String payloadEncodeString = payload.getPayload();
 
+        String jwtOriginData = headerEncodeString + "." + payloadEncodeString;
+
         // headerとpayloadを秘密鍵で署名
+
         final Signature signature = Signature.getInstance("SHA256withECDSAinP1363Format");
+//        final Signature signature = Signature.getInstance("SHA256withECDSA");
+
         signature.initSign(privateKey);
-        signature.update((headerEncodeString + "." + payloadEncodeString).getBytes());
+        signature.update(jwtOriginData.getBytes(StandardCharsets.UTF_8));
         byte[] signatureBytes = signature.sign();
 
         // header + payload + 著名を結合させてjwt tokenを生成
-        final String signatureStr = Base64.getEncoder().encodeToString(signatureBytes);
-        return headerEncodeString + "." + payloadEncodeString + "." + signatureStr;
+        final String signatureStr = JwtDataEncoder.base64UrlEncode(signatureBytes);
+        ApiLogger.log.debug(String.format("Jwt signature: %s", signatureStr));
+
+        return jwtOriginData + "." + signatureStr;
     }
 }

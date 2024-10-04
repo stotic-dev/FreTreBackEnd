@@ -1,0 +1,14 @@
+# APNsへの接続URL
+# 開発用
+apns.dev.connect.url=https://api.sandbox.push.apple.com:443
+# 本番用
+apns.prd.connect.url=https://api.push.apple.com:443
+
+# FreTreAppのバンドルID
+app.bundle.id=com.TacihiSato.FreTre
+
+# ApnsPushNotification .p8ファイルのファイルパス
+# ローカル
+apns.private.key.path=/Users/satoutaichi/work/key/iOS証明書/ServiceKeys/PushNotificationService/AuthKey_PC6F4BA63U.p8
+# コンテナ
+# apns.private.key.path=/opt/apps/dolphin-post/AuthKey_PC6F4BA63U.p8

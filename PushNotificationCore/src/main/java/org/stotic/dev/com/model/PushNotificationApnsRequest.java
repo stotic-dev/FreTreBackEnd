@@ -29,7 +29,7 @@ public class PushNotificationApnsRequest {
         this.aps = new ObjectMapper().readValue(aps, new TypeReference<>() {});
     }
 
-    public Map<String, String> getHeadrs() {
+    public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<>();
 
         headersMap.put("path", headers.path);
@@ -88,7 +88,7 @@ public class PushNotificationApnsRequest {
         private PushNotificationPriority apnsPriority;
         // 通知のトピック(バンドルID/アプリID)(オプション)
         private String apnsTopic;
-        // 複数の通知をユーザーへの1つの通知にマージするために使用する識別子
+        // 複数の通知をユーザーへの1つの通知にマージするために使用する識別子(オプション)
         private String apnsCollapseId;
 
         public void setApnsId(String apnsId) {

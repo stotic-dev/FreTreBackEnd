@@ -1,5 +1,7 @@
 package org.stotic.dev.com.model;
 
+import org.stotic.dev.com.logger.ApiLogger;
+
 import java.util.Arrays;
 
 public enum PushNotificationPriority {
@@ -12,9 +14,10 @@ public enum PushNotificationPriority {
         this.value = value;
     }
 
-    static PushNotificationPriority getPriority(String priority) {
+    public static PushNotificationPriority getPriority(String priority) {
+        ApiLogger.log.info(String.format("[In] priority: %s", priority));
         return Arrays.stream(PushNotificationPriority.class.getEnumConstants())
-                .filter( type -> { return type.value == priority; })
+                .filter( item -> item.value.equals(priority))
                 .findFirst()
                 .orElseThrow();
     }

@@ -1,43 +1,37 @@
-//package org.stotic.dev.com.api;
-//
-//import io.swagger.jaxrs.config.BeanConfig;
-//
-//import javax.ws.rs.ApplicationPath;
-//import java.util.Set;
-//
-//@ApplicationPath("/fretre")
-//public class ApplicationConfig extends javax.ws.rs.core.Application {
-//
-//    // "simple.maven.glassfish.jaxrs.resource"
-//    private static final String RESOURCE_PACKAGE = PushNotificationApi.class.getPackage().getName();
-//
-//    public ApplicationConfig() {
-//        BeanConfig beanConfig = new BeanConfig();
-//        beanConfig.setTitle("FreTreDoc");
-//        beanConfig.setDescription("A FreTre project.");
-//        beanConfig.setVersion("1.0.0");
-//        beanConfig.setSchemes(new String[]{"http", "https"});
-//        beanConfig.setHost("localhost:8080"); // ex. "localhost:8002"
-//        beanConfig.setBasePath("/FreTreDoc/fretre");
-//        beanConfig.setPrettyPrint(true);
-//
-//        beanConfig.setResourcePackage(RESOURCE_PACKAGE); // ex. "io.swagger.resources"
-//        beanConfig.setScan(true);
-//    }
-//
-//    @Override
-//    public Set<Class<?>> getClasses() {
-//        Set<Class<?>> resources = new java.util.HashSet<>();
-//        addRestResourceClasses(resources);
-//
-//        // enable Swagger
-//        resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);
-//        resources.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
-//
-//        return resources;
-//    }
-//
-//    private void addRestResourceClasses(Set<Class<?>> resources) {
-//        resources.add(PushNotificationApi.class);
-//    }
-//}
+package org.stotic.dev.com.api;
+
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Application;
+import org.stotic.dev.com.logger.ApiLogger;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@ApplicationPath("/service")
+@OpenAPIDefinition(info = @Info(
+        title = "FreTreBackEndServer",
+        version = "1.0.0")
+)
+public class ApplicationConfig extends Application {
+
+    public ApplicationConfig() {
+        super();
+        ApiLogger.log.info("[In]");
+    }
+
+    public Set<Class<?>> getClasses() {
+        ApiLogger.log.info("[In]");
+        Set<Class<?>> s = new HashSet<Class<?>>();
+        s.add(HelloWorldApi.class);
+        s.add(PushNotificationApi.class);
+        s.add(JacksonJaxbJsonProvider.class);
+        s.add(JacksonJsonProvider.class);
+        s.add(OpenApiResource.class);
+        return s;
+    }
+}

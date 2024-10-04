@@ -25,3 +25,6 @@ replay_pid*
 
 # maven outputs
 */target/
+
+# Secret Environment
+.env

@@ -1,5 +1,7 @@
 package org.stotic.dev.com.sequrity.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,8 @@ import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+
+import java.time.Instant;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,12 +46,26 @@ class JwtGeneratorTest {
             assertTrue(verifyResult);
         }
         catch(Exception e) {
-            Assertions.fail("予期せぬ例外発生" + e);
+            e.printStackTrace();
+            Assertions.fail(String.format("予期せぬ例外発生(error=%s)", e.toString()));
         }
     }
 
+    @Test
+    void apnsHeaderValidate() throws JsonProcessingException {
+        JwtHeader header = new JwtHeader(Algorithm.ES256, "PC6F4BA63U");
+        Assertions.assertEquals("eyAiYWxnIjogIkVTMjU2IiwgImtpZCI6ICJQQzZGNEJBNjNVIiB9", header.getHeader());
+    }
+
+    @Test
+    void apnsJwtPayloadValidate() throws JsonProcessingException {
+        Instant ist = Instant.ofEpochSecond(1728031127);
+        JwtPayload payload = new JwtPayload("56LYVN6DMF", ist);
+        Assertions.assertEquals("eyAiaXNzIjogIjU2TFlWTjZETUYiLCAiaWF0IjogMTcyODAzMTEyNyB9", payload.getPayload());
+    }
+
     // 署名検証
-    public Boolean verifyJWT(String jwt, ECPublicKey publicKey) throws NoSuchAlgorithmException,
+    public Boolean verifyJWT(String jwt, PublicKey publicKey) throws NoSuchAlgorithmException,
             InvalidKeyException, SignatureException {
         final String[] splitJwt = jwt.split("\\.");
         final String jwtHeaderStr = splitJwt[0];
@@ -57,10 +75,12 @@ class JwtGeneratorTest {
         System.out.println("payload: " + jwtPayloadStr);
         System.out.println("signature: " + jwtSignatureStr);
         final Signature jwtSignature = Signature.getInstance("SHA256withECDSAinP1363Format");
+        System.out.println(String.format("Start init verify"));
         jwtSignature.initVerify(publicKey);
+        System.out.println(String.format("Start verify"));
         jwtSignature.update((jwtHeaderStr + "." + jwtPayloadStr).getBytes());
 
-        if (jwtSignature.verify(Base64.getDecoder().decode(jwtSignatureStr))) {
+        if (jwtSignature.verify(Base64.getUrlDecoder().decode(jwtSignatureStr))) {
             System.out.println("Verifying Signature Success");
             return true;
         } else {
