@@ -8,12 +8,12 @@ import java.util.Map;
 
 public class PushNotificationApnsRequestHeader {
 
-    public PushNotificationApnsRequestHeader(@NotNull String authorization, @NotNull PushNotificationType pushType, String apnsId, String apnsExpiration, PushNotificationPriority apnsPriority, String apnsTopic, String apnsCollapseId) {
+    public PushNotificationApnsRequestHeader(@NotNull String authorization, @NotNull PushNotificationType pushType, String apnsId, PushNotificationApnsExpiration apnsExpiration, PushNotificationPriority apnsPriority, String apnsTopic, String apnsCollapseId) {
         ApiLogger.log.debug(String.format("[In] authorization=%s, pushType=%s, apnsId=%s, apnsExpiration=%s, apnsPriority=%s, apnsTopic=%s, apnsCollapseId=%s", authorization, pushType.getKey(), apnsId, apnsExpiration, apnsPriority.getValue(), apnsTopic, apnsCollapseId));
         this.authorization = authorization;
         this.pushType = pushType;
         this.apnsId = apnsId;
-        this.apnsExpiration = apnsExpiration;
+        this.apnsExpiration = apnsExpiration.expirationEpoc();
         this.apnsPriority = apnsPriority;
         this.apnsTopic = apnsTopic;
         this.apnsCollapseId = apnsCollapseId;
@@ -21,26 +21,27 @@ public class PushNotificationApnsRequestHeader {
 
     // 通知を送信することを許可する暗号化されたトークン
     @NotNull
-    private String authorization;
+    private final String authorization;
     // 通知するペイロードの種別
     @NotNull
-    private PushNotificationType pushType;
+    private final PushNotificationType pushType;
     // 通知の一意のID(オプション)
-    private String apnsId;
+    private final String apnsId;
     // 通知が無効になる日付(オプション)
-    private String apnsExpiration;
+    private final String apnsExpiration;
     // 通知の優先順位(オプション)
-    private PushNotificationPriority apnsPriority;
+    private final PushNotificationPriority apnsPriority;
     // 通知のトピック(バンドルID/アプリID)(オプション)
-    private String apnsTopic;
+    private final String apnsTopic;
     // 複数の通知をユーザーへの1つの通知にマージするために使用する識別子(オプション)
-    private String apnsCollapseId;
+    private final String apnsCollapseId;
 
     public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<>();
 
         headersMap.put("Authorization", authorization);
         headersMap.put("apns-push-type", pushType.getKey());
+        headersMap.put("apns-expiration", apnsExpiration);
 
         if (apnsId != null) {
             headersMap.put("apns-id", apnsId);

@@ -1,6 +1,7 @@
 package org.stotic.dev.com.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.stotic.dev.com.logger.ApiLogger;
@@ -27,8 +28,7 @@ public class HttpClient implements HttpClientInterface {
         String responseBodyString = response.body().string();
         ApiLogger.log.info(String.format("Succeed POST Request(status=%s, headers=%s, body=%s).", response.code(), header.toString(), responseBodyString));
         ObjectMapper mapper = new ObjectMapper();
-        ResponseData responseData = mapper.readValue(responseBodyString, responseType);
-        return new ApiResponse<ResponseData>(response.code(), header, responseData);
+        return new ApiResponse<ResponseData>(response.code(), header, responseBodyString.isBlank() ? null : mapper.readValue(responseBodyString, responseType));
     }
 
     public <ResponseData> ApiResponse<ResponseData> post(ApiServiceInterface service, Class<ResponseData> responseType) throws IOException {
@@ -44,9 +44,9 @@ public class HttpClient implements HttpClientInterface {
 
         String responseBodyString = response.body().string();
         ApiLogger.log.info(String.format("Succeed POST Request(status=%s, headers=%s, body=%s).", response.code(), header.toString(), responseBodyString));
+
         ObjectMapper mapper = new ObjectMapper();
-        ResponseData responseData = mapper.readValue(responseBodyString, responseType);
-        return new ApiResponse<ResponseData>(response.code(), header, responseData);
+        return new ApiResponse<ResponseData>(response.code(), header, responseBodyString.isBlank() ? null : mapper.readValue(responseBodyString, responseType));
     }
 
     private Map<String, String> convertHeaderToMap(Headers headers) {

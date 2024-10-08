@@ -1,14 +1,12 @@
 package org.stotic.dev.com.logic;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import org.stotic.dev.com.client.ApiResponse;
 import org.stotic.dev.com.dto.SendNotificationRes;
 import org.stotic.dev.com.exception.SystemException;
 import org.stotic.dev.com.dto.SendNotificationReq;
 import org.stotic.dev.com.logger.ApiLogger;
-import org.stotic.dev.com.logic.ApiLogic;
 import org.stotic.dev.com.model.*;
 import org.stotic.dev.com.model.privateKey.ApnsPushNotificationPrivateKeyAccessor;
 import org.stotic.dev.com.model.property.CommonPropertyKey;
@@ -53,7 +51,7 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
         ApiResponse<PushNotificationApnsResponseData> response = apnsPushNotificationClient.execute(service);
 
         ApiLogger.log.info("[End]");
-        return new SendNotificationRes(response.getStatus().toString(), response.getData().getReason());
+        return new SendNotificationRes(response.getStatus().toString(), response.getData());
     }
 
     private PushNotificationApnsRequestHeader createApnsRequestHeader(SendNotificationReq req) throws SystemException {
@@ -71,7 +69,7 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
         UUID appId = uuid.getUuid();
 
         // Apnsへリクエストする通知の保存期間を指定
-        String expiration = req.getNotificationExpiration().isBlank() ? req.getNotificationExpiration() : req.getNotificationExpiration();
+        PushNotificationApnsExpiration expiration = new PushNotificationApnsExpiration(req.getNotificationExpiration());
 
         // Apnsへリクエストする通知の優先度を指定
         PushNotificationPriority priority = PushNotificationPriority.getPriority(req.getNotificationPriority().toString());

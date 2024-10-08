@@ -8,8 +8,6 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class SendNotificationReq extends ApiRequestDto {
 
-    // 送信元の名前
-    @NotBlank(message = "Not found srcName") private String srcName;
     // 宛先のtoken
     @NotNull(message = "Not found srcName") private List<String> destinations;
     // Apnsペイロードのjson
@@ -19,12 +17,11 @@ public class SendNotificationReq extends ApiRequestDto {
     // 通知の優先度
     @Min(value = 1, message = "No allow less than 1") @Max(value = 10, message = "No allow 10 over") private Integer notificationPriority;
     // 通知の有効期限(UNIXエポック)
-    @NotEmpty(message = "No allow empty string") private String notificationExpiration;
+    private String notificationExpiration;
     // 複数通知をマージするための識別子
-    @NotEmpty(message = "No allow empty string") private String collapseId;
+    private String collapseId;
 
-    public SendNotificationReq(@NotBlank String srcName, @NotBlank List<String> destinations, @NotBlank String payload, Boolean developFlg, @Min(value = 1) @Max(value = 10) Integer notificationPriority, @NotEmpty String notificationExpiration, @NotEmpty @Max(value = 64) String collapseId) {
-        this.srcName = srcName;
+    public SendNotificationReq(@NotBlank List<String> destinations, @NotBlank String payload, Boolean developFlg, @Min(value = 1) @Max(value = 10) Integer notificationPriority, @NotEmpty String notificationExpiration, @NotEmpty @Max(value = 64) String collapseId) {
         this.destinations = destinations;
         this.payload = payload;
         this.developFlg = developFlg;
@@ -34,17 +31,12 @@ public class SendNotificationReq extends ApiRequestDto {
     }
 
     public SendNotificationReq() {
-        srcName = null;
         destinations = null;
         payload = null;
         developFlg = null;
         notificationPriority = null;
         notificationExpiration = null;
         collapseId = null;
-    }
-
-    public String getSrcName() {
-        return srcName;
     }
 
     public List<String> getDestinations() {
@@ -69,10 +61,6 @@ public class SendNotificationReq extends ApiRequestDto {
 
     public String getCollapseId() {
         return collapseId;
-    }
-
-    public void setSrcName(String srcName) {
-        this.srcName = srcName;
     }
 
     public void setDestinations(List<String> destinations) {

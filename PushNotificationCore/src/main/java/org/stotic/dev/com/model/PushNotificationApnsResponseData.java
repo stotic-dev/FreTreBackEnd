@@ -1,16 +1,17 @@
 package org.stotic.dev.com.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PushNotificationApnsResponseData {
 
     // 失敗の理由を示すエラーコード
+    @JsonProperty(required = false)
     private String reason;
     // APNs がトークンがトピックに対して有効でなくなったことを表すエポックからのミリ秒単位の時間
-//    private Long timestamp;
+    @JsonProperty(required = false)
+    private Long timestamp;
 
     public PushNotificationApnsResponseData() {
     }
@@ -23,11 +24,11 @@ public class PushNotificationApnsResponseData {
         this.reason = reason;
     }
 
-//    public Long getTimestamp() {
-//        return timestamp;
-//    }
+    public Long getTimestamp() {
+        return timestamp;
+    }
 
-//    public void setTimestamp(Long timestamp) {
-//        this.timestamp = timestamp;
-//    }
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
 }
