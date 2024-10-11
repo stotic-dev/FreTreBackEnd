@@ -9,7 +9,13 @@ public enum ApiResultCode {
     /**
      * 想定外のエラーが発生した場合
      */
-    SYSTEM_ERROR("100", "Occurred System Exception");
+    SYSTEM_ERROR("100", "Occurred System Exception"),
+    /**
+     * 通知の送信に成功した場合
+     */
+    SUCCESS_SEND_NOTIFICATION("200", "Success send notification"),
+    Failure_SEND_NOTIFICATION("201", "Fail send notification");
+
 
     private String code;
 

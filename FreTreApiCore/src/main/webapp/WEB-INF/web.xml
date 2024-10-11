@@ -3,21 +3,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
   <display-name>Archetype Created Web Application</display-name>
-  <listener>
-    <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-  </listener>
   <servlet>
     <servlet-name>jaxrs-servlet</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
-      <param-name>jersey.config.server.wadl.disableWadl</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
       <param-value>
         org.stotic.dev.com,
-        com.fasterxml.jackson.jaxrs.json,
         io.swagger.v3.jaxrs2.integration.resources
       </param-value>
     </init-param>

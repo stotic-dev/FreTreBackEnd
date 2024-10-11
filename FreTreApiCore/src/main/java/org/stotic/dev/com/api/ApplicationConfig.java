@@ -1,12 +1,13 @@
 package org.stotic.dev.com.api;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
+import org.glassfish.jersey.jsonb.internal.JsonBindingProvider;
 import org.stotic.dev.com.logger.ApiLogger;
 
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> s = new HashSet<Class<?>>();
         s.add(HelloWorldApi.class);
         s.add(PushNotificationApi.class);
+        s.add(JsonBindingProvider.class);
         s.add(JacksonJaxbJsonProvider.class);
         s.add(JacksonJsonProvider.class);
         s.add(OpenApiResource.class);

@@ -11,7 +11,11 @@ public enum SystemPropertyKey implements SystemVariableKeys {
     /**
      * Apns認証のキーID
      */
-    APNS_KEY_ID("apnsKeyId");
+    APNS_KEY_ID("apnsKeyId"),
+    /**
+     * 共通プロパティファイルのパス
+     */
+    COMMON_PROPERTY_PATH("commonPropertyPath");
 
     SystemPropertyKey(String key) {
         this.key = key;

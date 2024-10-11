@@ -13,13 +13,4 @@
     <packaging>jar</packaging>
     <name>CommonCore</name>
     <url>http://maven.apache.org</url>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>25.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
 </project>
