@@ -56,8 +56,7 @@ jobs:
             git fetch
             git checkout ${{ github.ref_name }}
             git pull
-            bash FreTreAp
-            iCore/conte/scripts/deploy_payara_server.sh
+            bash FreTreApiCore/conte/scripts/deploy_payara_server.sh
           '
 
       # # AWS CLIをインストールする
