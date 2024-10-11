@@ -41,6 +41,6 @@ jobs:
   call-workflow:
     if: ${{ success() }} && github.ref == 'main'
     needs: [build]
-    uses: ./.github/workflows/cd_STG.yml
+    uses: ./.github/workflows/cd.yml
     secrets:
       GCP_SERVICE_KEY: ${{ secrets.GCP_SERVICE_KEY }}
