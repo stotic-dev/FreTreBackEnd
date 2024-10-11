@@ -1,0 +1,49 @@
+name: Server CD
+
+on:
+  workflow_call:
+    secrets:
+      GCP_SERVICE_KEY:
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # IP取得ライブラリをインストール
+      - name: Public IP Install
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      # BranchをCheckout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # GCPの認証
+      - name: Auth GCP
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_KEY }}
+
+      # gcloud sdk 設定
+      - name: Setup Google Cloud SDK
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Deploy with gcloud"
+        run: |
+          gcloud compute ssh taichis844@fretre-notification-instance \
+          --zone us-west1-a \
+          --quiet \
+          --ssh-flag='-p 10022' \
+          --command='
+            cd app/FreTreBackEnd && 
+            git fetch
+            git checkout ${{ github.ref_name }}
+            git pull
+            bash FreTreApiCore/conte/scripts/deploy_payara_server.sh
+          '
