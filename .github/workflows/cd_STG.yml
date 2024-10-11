@@ -50,6 +50,7 @@ jobs:
           gcloud compute ssh taichis844@fretre-notification-instance \
           --zone us-west1-a \
           --quiet \
+          --ssh-flag='-p 10022' \
           --command='
             cd app/FreTreBackEnd && 
             git fetch
