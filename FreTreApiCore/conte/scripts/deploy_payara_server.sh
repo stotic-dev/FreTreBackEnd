@@ -31,18 +31,22 @@ done
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 
-# プロジェクトのビルド開始
-bash $BUILD_SCRIPT_FILE
-
-# Payaraサーバーのドメイン起動チェック
+# Payaraサーバーのドメイン起動チェックと一時停止
 echo "Checking if Payara domain '$DOMAIN' is running..."
 $PAYARA_SERVER_SCRIPT list-domains | grep "$DOMAIN running" > /dev/null
 if [ $? -ne 0 ]; then
-    echo "Payara domain '$DOMAIN' is not running. Starting the domain..."
-    $PAYARA_SERVER_SCRIPT start-domain $DOMAIN || { echo "Failed to start Payara domain"; exit 1; }
+    echo "Payara domain '$DOMAIN' is not running."
 else
     echo "Payara domain '$DOMAIN' is already running."
+    $PAYARA_SERVER_SCRIPT stop-domain $DOMAIN || { echo "Failed to stop Payara $DOMAIN"; exit 1; }
 fi
+
+# プロジェクトのビルド開始
+bash $BUILD_SCRIPT_FILE
+
+# Payaraサーバーのドメイン起動
+echo "Payara domain '$DOMAIN' is running..."
+$PAYARA_SERVER_SCRIPT start-domain $DOMAIN || { echo "Failed to start Payara domain"; exit 1; }
 
 # システムプロパティが指定されている場合は設定
 if [ "$APP_TEAM_ID" != "null" ]; then
