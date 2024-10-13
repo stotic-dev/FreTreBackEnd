@@ -68,6 +68,10 @@ fi
 echo "Checking application system property..."
 $PAYARA_SERVER_SCRIPT list-system-properties
 
+# デプロイ済みのアプリケーションをアンデプロイ
+echo "UnDeploying the FreTreApiCore"
+$PAYARA_SERVER_SCRIPT undeploy FreTreApiCore
+
 # WARファイルのデプロイ
 echo "Deploying the WAR file: $WAR_FILE_PATH"
 $PAYARA_SERVER_SCRIPT deploy --force true --contextroot fretre-api --name FreTreApiCore $WAR_FILE_PATH || { echo "Failed to deploy the WAR file"; exit 1; }
