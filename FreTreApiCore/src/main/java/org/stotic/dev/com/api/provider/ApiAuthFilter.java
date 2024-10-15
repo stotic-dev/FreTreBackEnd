@@ -27,7 +27,7 @@ public class ApiAuthFilter implements ContainerRequestFilter {
         String auth = containerRequestContext.getHeaderString(AUTH_HEADER_KEY);
         try {
             if(validateAuth(auth)) { return; }
-            ApiLogger.log.info(String.format("NOT AUTHORIZATION: $s.", auth));
+            ApiLogger.log.info(String.format("NOT AUTHORIZATION: %s.", auth));
             containerRequestContext.abortWith(createAbortResponse(ApiResultCode.NOT_AUTHRIZATION));
         } catch (SystemException e) {
             containerRequestContext.abortWith(createAbortResponse(ApiResultCode.SYSTEM_ERROR));
