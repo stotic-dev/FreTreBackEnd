@@ -12,7 +12,7 @@ public class BadRequestExceptionHandler implements ExceptionMapper<NullPointerEx
 
     @Override
     public Response toResponse(NullPointerException e) {
-        ApiLogger.log.error(e.toString());
+        ApiLogger.log.error(String.format("[In] %s", e.toString()));
         return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ApiResultDto(ApiResultCode.BAD_REQUEST.getCode()))
                 .build();

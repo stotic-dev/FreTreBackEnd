@@ -2,7 +2,7 @@
 
 # 使用方法のヘルプを表示する関数
 usage() {
-    echo "Usage: $0 [-f <war file path>] [-p <payara script file path>] [-t <app team id>] [-k <apns notification key id>] [-c <common property file path>]"
+    echo "Usage: $0 [-p <payara script file path>] [-t <app team id>] [-k <apns notification key id>] [-c <common property file path>]"
     exit 1
 }
 
@@ -12,17 +12,18 @@ BUILD_SCRIPT_FILE="build_app.sh"
 PAYARA_SERVER_SCRIPT="/opt/payara6/bin/asadmin"
 APP_TEAM_ID=null
 APNS_NOTIFICATION_KEY_ID=null
+API_AUTH=null
 DOMAIN="domain1"
 FRETRE_COMMON_PROPERTY_PATH="/opt/app/resources/common.property"
 
 # 引数をパース
-while getopts "f:p:t:k:c:" opt; do
+while getopts "p:t:k:c:a:" opt; do
   case $opt in
-    f) WAR_FILE_PATH="$OPTARG" ;;
     p) PAYARA_SERVER_SCRIPT="$OPTARG" ;;
     t) APP_TEAM_ID="$OPTARG" ;;
     k) APNS_NOTIFICATION_KEY_ID="$OPTARG" ;;
     c) FRETRE_COMMON_PROPERTY_PATH="$OPTARG" ;;
+    a) API_AUTH="$OPTARG" ;;
     *) usage ;;
   esac
 done
@@ -62,6 +63,16 @@ fi
 if [ "$FRETRE_COMMON_PROPERTY_PATH" != "null" ]; then
     echo "Setting system property: commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH"
     $PAYARA_SERVER_SCRIPT create-system-properties commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH
+fi
+
+if [ "$FRETRE_COMMON_PROPERTY_PATH" != "null" ]; then
+    echo "Setting system property: commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH"
+    $PAYARA_SERVER_SCRIPT create-system-properties commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH
+fi
+
+if [ "$API_AUTH" != "null" ]; then
+    echo "Setting system property: apiAuth=$API_AUTH"
+    $PAYARA_SERVER_SCRIPT create-system-properties apiAuth=$API_AUTH
 fi
 
 # システムプロパティの確認

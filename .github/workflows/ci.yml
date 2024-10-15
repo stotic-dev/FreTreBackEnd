@@ -29,8 +29,15 @@ jobs:
       - name: Build with maven
         run: mvn -f ./FreTreServer/pom.xml --batch-mode --update-snapshots verify
 
+  upload-ifacts:
+    if: ${{ success() && github.event_name == 'push' && github.ref_name == 'main' }} # mainへのpush時のみ実行
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Move artifacts for upload
-        if: ${{ success() }} && github.ref == 'main'
         run: mkdir staging && cp ./*/target/*.{jar,war} staging
 
       - name: Upload artifacts
@@ -38,8 +45,9 @@ jobs:
         with:
           name: Package
           path: staging
+
   call-workflow:
-    if: ${{ success() }} && github.ref == 'main'
+    if: ${{ success() && github.event_name == 'push' && github.ref_name == 'main' }} # mainへのpush時のみ実行
     needs: [build]
     uses: ./.github/workflows/cd.yml
     secrets:

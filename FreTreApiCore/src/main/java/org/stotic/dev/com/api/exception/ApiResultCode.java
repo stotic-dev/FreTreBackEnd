@@ -7,6 +7,10 @@ public enum ApiResultCode {
      */
     BAD_REQUEST("000", "Received invalid request."),
     /**
+     *
+     */
+    NOT_AUTHRIZATION("001", "Not found auth."),
+    /**
      * 想定外のエラーが発生した場合
      */
     SYSTEM_ERROR("100", "Occurred System Exception"),
