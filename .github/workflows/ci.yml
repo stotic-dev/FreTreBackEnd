@@ -30,7 +30,7 @@ jobs:
         run: mvn -f ./FreTreServer/pom.xml --batch-mode --update-snapshots verify
 
       - name: Move artifacts for upload
-        if: ${{ success() }} && github.ref == 'main'
+        if: ${{ success() }} && github.ref_name == 'main'
         run: mkdir staging && cp ./*/target/*.{jar,war} staging
 
       - name: Upload artifacts
@@ -39,7 +39,7 @@ jobs:
           name: Package
           path: staging
   call-workflow:
-    if: ${{ success() }} && github.ref == 'main'
+    if: ${{ success() }} && github.ref_name == 'main'
     needs: [build]
     uses: ./.github/workflows/cd.yml
     secrets:
