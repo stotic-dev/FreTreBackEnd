@@ -15,7 +15,8 @@ public enum SystemPropertyKey implements SystemVariableKeys {
     /**
      * 共通プロパティファイルのパス
      */
-    COMMON_PROPERTY_PATH("commonPropertyPath");
+    COMMON_PROPERTY_PATH("commonPropertyPath"),
+    API_AUTH("apiAuth");
 
     SystemPropertyKey(String key) {
         this.key = key;
