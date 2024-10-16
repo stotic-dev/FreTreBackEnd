@@ -9,14 +9,14 @@ import org.stotic.dev.com.model.PushNotificationApnsResponseData;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SendNotificationRes extends ApiResultDto {
 
-    private final static String SUCCESS_APNS_RESPONSE_CODE = "200";
+    private static final int SUCCESS_RESULT_CODE = 200;
 
     private String errorReason;
 
     public  SendNotificationRes() {}
 
-    public SendNotificationRes(String resultCode, PushNotificationApnsResponseData responseData) {
-        super(resultCode == SUCCESS_APNS_RESPONSE_CODE ? ApiResultCode.SUCCESS_SEND_NOTIFICATION.getCode() : ApiResultCode.Failure_SEND_NOTIFICATION.getCode());
+    public SendNotificationRes(int resultCode, PushNotificationApnsResponseData responseData) {
+        super(resultCode == SUCCESS_RESULT_CODE ? ApiResultCode.SUCCESS_SEND_NOTIFICATION.getCode() : ApiResultCode.FAILURE_SEND_NOTIFICATION.getCode());
         if(responseData != null) {
             errorReason = responseData.getReason();
         }

@@ -51,7 +51,7 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
         ApiResponse<PushNotificationApnsResponseData> response = apnsPushNotificationClient.execute(service);
 
         ApiLogger.log.info("[End]");
-        return new SendNotificationRes(response.getStatus().toString(), response.getData());
+        return new SendNotificationRes(response.getStatus(), response.getData());
     }
 
     private PushNotificationApnsRequestHeader createApnsRequestHeader(SendNotificationReq req) throws SystemException {

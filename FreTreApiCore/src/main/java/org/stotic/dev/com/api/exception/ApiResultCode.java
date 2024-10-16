@@ -7,7 +7,7 @@ public enum ApiResultCode {
      */
     BAD_REQUEST("000", "Received invalid request."),
     /**
-     *
+     * 認証に失敗した場合
      */
     NOT_AUTHRIZATION("001", "Not found auth."),
     /**
@@ -18,7 +18,10 @@ public enum ApiResultCode {
      * 通知の送信に成功した場合
      */
     SUCCESS_SEND_NOTIFICATION("200", "Success send notification"),
-    Failure_SEND_NOTIFICATION("201", "Fail send notification");
+    /**
+     * APNSから通知の失敗が返された場合
+     */
+    FAILURE_SEND_NOTIFICATION("201", "Fail send notification");
 
 
     private String code;

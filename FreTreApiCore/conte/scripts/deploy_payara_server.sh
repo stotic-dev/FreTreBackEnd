@@ -65,11 +65,6 @@ if [ "$FRETRE_COMMON_PROPERTY_PATH" != "null" ]; then
     $PAYARA_SERVER_SCRIPT create-system-properties commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH
 fi
 
-if [ "$FRETRE_COMMON_PROPERTY_PATH" != "null" ]; then
-    echo "Setting system property: commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH"
-    $PAYARA_SERVER_SCRIPT create-system-properties commonPropertyPath=$FRETRE_COMMON_PROPERTY_PATH
-fi
-
 if [ "$API_AUTH" != "null" ]; then
     echo "Setting system property: apiAuth=$API_AUTH"
     $PAYARA_SERVER_SCRIPT create-system-properties apiAuth=$API_AUTH
