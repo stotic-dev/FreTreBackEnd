@@ -9,6 +9,6 @@ app.bundle.id=com.TacihiSato.FreTre
 
 # ApnsPushNotification .p8ファイルのファイルパス
 # ローカル
-# apns.private.key.path=/Users/satoutaichi/work/key/iOS証明書/ServiceKeys/PushNotificationService/AuthKey_PC6F4BA63U.p8
+apns.private.key.path=/Users/satoutaichi/work/key/iOS証明書/ServiceKeys/PushNotificationService/AuthKey_PC6F4BA63U.p8
 # サーバー
-apns.private.key.path=/home/taichis844/.PrivateKey/AuthKey_PC6F4BA63U.p8
+#apns.private.key.path=/home/taichis844/.PrivateKey/AuthKey_PC6F4BA63U.p8

@@ -12,30 +12,21 @@ import java.security.SignatureException;
 
 public class PushNotificationApnsAuthorization {
 
-    private PrivateKey privateKey;
-    private String teamId;
-    private String keyId;
+    private final String authorizationToken;
 
-    public PushNotificationApnsAuthorization(PrivateKey privateKey, String teamId, String keyId) {
-        this.privateKey = privateKey;
-        this.teamId = teamId;
-        this.keyId = keyId;
-        ApiLogger.log.info(String.format("Complete initialize PushNotificationApnsAuthorization(privateKey=%s, teamId=%s, keyId=%s)", privateKey.toString(), teamId, keyId));
-    }
-
-    public String getAuthorizationToken() throws SystemException {
+    public PushNotificationApnsAuthorization(PrivateKey privateKey, String teamId, String keyId) throws SystemException {
         try {
             String jwtToken = JwtGenerator.generateJwtToken(privateKey, keyId, teamId);
             ApiLogger.log.debug("Succeed generate jwt token.");
-            return String.format("Bearer %s", jwtToken);
-        } catch (NoSuchAlgorithmException e) {
-            throw new SystemException(e.toString());
-        } catch (SignatureException e) {
-            throw new SystemException(e.toString());
-        } catch (InvalidKeyException e) {
-            throw new SystemException(e.toString());
-        } catch (JsonProcessingException e) {
+            authorizationToken = String.format("Bearer %s", jwtToken);
+        } catch (NoSuchAlgorithmException | SignatureException | JsonProcessingException | InvalidKeyException e) {
             throw new SystemException(e.toString());
         }
+
+        ApiLogger.log.info(String.format("Complete initialize PushNotificationApnsAuthorization(privateKey=%s, teamId=%s, keyId=%s)", privateKey.toString(), teamId, keyId));
+    }
+
+    public String getAuthorizationToken() {
+        return this.authorizationToken;
     }
 }
