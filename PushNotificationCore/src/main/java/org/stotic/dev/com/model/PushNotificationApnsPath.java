@@ -2,23 +2,20 @@ package org.stotic.dev.com.model;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class PushNotificationApnsPath {
 
     private String baseUrl;
-    private List<String> destinationTokens;
+    private String destinationToken;
 
     // APNSにリクエストするURLのベースパス
     private static final String APNS_BASE_PATH = "/3/device";
 
-    public PushNotificationApnsPath(@NotNull String baseUrl, @NotNull List<String> destinationTokens) {
+    public PushNotificationApnsPath(@NotNull String baseUrl, @NotNull String destinationToken) {
         this.baseUrl = baseUrl;
-        this.destinationTokens = destinationTokens;
+        this.destinationToken = destinationToken;
     }
 
     public String getRequestUrl() {
-        return String.format("%s%s/%s", baseUrl, APNS_BASE_PATH, destinationTokens.stream().collect(Collectors.joining()));
+        return String.format("%s%s/%s", baseUrl, APNS_BASE_PATH, destinationToken);
     }
 }

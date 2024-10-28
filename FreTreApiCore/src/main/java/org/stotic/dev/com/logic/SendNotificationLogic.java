@@ -15,6 +15,8 @@ import org.stotic.dev.com.model.restClient.ApnsPushNotificationClient;
 import org.stotic.dev.com.model.restClient.service.ApnsPushNotificationHttpService;
 import org.stotic.dev.com.model.uuid.UuidGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -40,17 +42,24 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
         // Apnsへのリクエストの作成
         // ApnsへリクエストするためのURLを作成
         String baseUrl = propertyReader.getValue(input.getDevelopFlg() ? CommonPropertyKey.APNS_DEV_CONNECT_URL : CommonPropertyKey.APNS_PRD_CONNECT_URL);
-        PushNotificationApnsPath path = new PushNotificationApnsPath(baseUrl, input.getDestinations());
+        List<PushNotificationApnsPath> paths = input.getDestinations().stream()
+                .map(token -> new PushNotificationApnsPath(baseUrl, token))
+                .toList();
 
         // Apnsへのリクエストヘッダー作成
         PushNotificationApnsRequestHeader header = createApnsRequestHeader(input);
 
-        // Apnsへリクエスト
-        ApnsPushNotificationHttpService service = new ApnsPushNotificationHttpService(path.getRequestUrl(), header, input.getPayload());
-        ApiResponse<PushNotificationApnsResponseData> response = apnsPushNotificationClient.execute(service);
+        List<ApiResponse<PushNotificationApnsResponseData>> results = new ArrayList<>();
+
+        for(PushNotificationApnsPath path : paths) {
+            // Apnsへリクエスト
+            ApnsPushNotificationHttpService service = new ApnsPushNotificationHttpService(path.getRequestUrl(), header, input.getPayload());
+            ApiResponse<PushNotificationApnsResponseData> response = apnsPushNotificationClient.execute(service);
+            results.add(response);
+        }
 
         ApiLogger.log.info("[End]");
-        return new SendNotificationRes(response.getStatus(), response.getData());
+        return new SendNotificationRes(results);
     }
 
     private PushNotificationApnsRequestHeader createApnsRequestHeader(SendNotificationReq req) throws SystemException {
