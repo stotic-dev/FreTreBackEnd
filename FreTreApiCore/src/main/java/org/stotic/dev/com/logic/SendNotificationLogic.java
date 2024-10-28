@@ -8,16 +8,13 @@ import org.stotic.dev.com.exception.SystemException;
 import org.stotic.dev.com.dto.SendNotificationReq;
 import org.stotic.dev.com.logger.ApiLogger;
 import org.stotic.dev.com.model.*;
-import org.stotic.dev.com.model.privateKey.ApnsPushNotificationPrivateKeyAccessor;
+import org.stotic.dev.com.model.jwt.ApnsTokenRepository;
 import org.stotic.dev.com.model.property.CommonPropertyKey;
 import org.stotic.dev.com.model.property.CommonPropertyReader;
-import org.stotic.dev.com.model.property.SystemPropertyKey;
 import org.stotic.dev.com.model.restClient.ApnsPushNotificationClient;
 import org.stotic.dev.com.model.restClient.service.ApnsPushNotificationHttpService;
 import org.stotic.dev.com.model.uuid.UuidGenerator;
-import org.stotic.dev.com.utilities.SystemVariableUtility;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +24,8 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
 
     @Inject
     private CommonPropertyReader propertyReader;
+    @Inject
+    private ApnsTokenRepository apnsTokenRepository;
     @Inject
     private UuidGenerator uuid;
     @Inject
@@ -65,11 +64,7 @@ public class SendNotificationLogic implements ApiLogic<SendNotificationReq, Send
 
     private PushNotificationApnsRequestHeader createApnsRequestHeader(SendNotificationReq req) throws SystemException {
         // Apnsへリクエストするための認証トークンを作成
-        ApnsPushNotificationPrivateKeyAccessor accessor = new ApnsPushNotificationPrivateKeyAccessor(propertyReader.getValue(CommonPropertyKey.APNS_PRIVATE_KEY_PATH));
-        PrivateKey privateKey = accessor.getPrivateKey();
-        String teamId = SystemVariableUtility.getValue(SystemPropertyKey.APP_TEAM_ID);
-        String keyId = SystemVariableUtility.getValue(SystemPropertyKey.APNS_KEY_ID);
-        PushNotificationApnsAuthorization authorization = new PushNotificationApnsAuthorization(privateKey, teamId, keyId);
+        PushNotificationApnsAuthorization authorization = apnsTokenRepository.build();
 
         // Apnsへリクエストするための通知タイプを指定
         PushNotificationType pushType = PushNotificationType.ALERT;
